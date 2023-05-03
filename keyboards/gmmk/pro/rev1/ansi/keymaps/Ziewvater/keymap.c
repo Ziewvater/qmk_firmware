@@ -23,6 +23,44 @@ enum layer_names {
     _WFN,
 };
 
+enum custom_keycodes {
+    Z_NEXT = SAFE_RANGE,
+    Z_PREV,
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case Z_NEXT:
+        if (record->event.pressed) {
+            // Ctrl + Alt + Cmd + Right
+            SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LCMD));
+            SEND_STRING(SS_TAP(X_RIGHT));
+            SEND_STRING(SS_UP(X_LCTL) SS_UP(X_LALT) SS_UP(X_LCMD));
+        }
+        break;
+
+    case Z_PREV:
+        if (record->event.pressed) {
+            // Ctrl + Alt + Cmd + Left
+            SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LCMD));
+            SEND_STRING(SS_TAP(X_LEFT));
+            SEND_STRING(SS_UP(X_LCTL) SS_UP(X_LALT) SS_UP(X_LCMD));
+        }
+        break;
+    }
+    return true;
+};
+
+void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+    case Z_NEXT:
+        break;
+
+    case Z_PREV:
+        break;
+    }
+};
+
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -57,8 +95,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_MFN] = LAYOUT(
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
         _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______, _______, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, QK_BOOT,          _______,
-        _______, _______, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,          _______,
+        _______, _______, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, Z_PREV,  Z_NEXT,  QK_BOOT,          _______,
+        _______, _______, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, KC_MCTL,          _______,          _______,
         _______,          _______, RGB_HUI, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            _______,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
     ),
