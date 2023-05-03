@@ -26,6 +26,7 @@ enum layer_names {
 enum custom_keycodes {
     Z_NEXT = SAFE_RANGE,
     Z_PREV,
+    ALT_BK,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -45,6 +46,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_DOWN(X_LCTL) SS_DOWN(X_LALT) SS_DOWN(X_LCMD));
             SEND_STRING(SS_TAP(X_LEFT));
             SEND_STRING(SS_UP(X_LCTL) SS_UP(X_LALT) SS_UP(X_LCMD));
+        }
+        break;
+    case ALT_BK:
+        if (record->event.pressed) {
+            // Alt + Backspace
+            SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_BACKSPACE) SS_UP(X_RALT));
         }
         break;
     }
@@ -94,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_MFN] = LAYOUT(
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
-        _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ALT_BK,           _______,
         _______, _______, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, Z_PREV,  Z_NEXT,  QK_BOOT,          _______,
         _______, _______, RGB_VAD, _______, _______, _______, _______, _______, _______, _______, _______, KC_MCTL,          _______,          _______,
         _______,          _______, RGB_HUI, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
