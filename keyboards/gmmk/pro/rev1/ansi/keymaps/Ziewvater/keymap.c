@@ -105,7 +105,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_MFN] = LAYOUT(
-        _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, _______, _______,          _______,
+        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
         _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ALT_BK,           _______,
         _______, _______, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, Z_PREV,  Z_NEXT,  QK_BOOT,          _______,
         _______, _______, RGB_VAD, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_MCTL,          _______,          _______,
@@ -155,7 +155,7 @@ void keyboard_post_init_user(void) {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Change all lights to off to build state back up
     rgb_matrix_set_color_all(RGB_OFF);
-    
+
     switch (get_highest_layer(layer_state)) {
     case _MAC:
         rgb_matrix_set_color(LED_INS, RGB_OFF);
