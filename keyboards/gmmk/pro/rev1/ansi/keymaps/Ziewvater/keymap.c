@@ -16,6 +16,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+#include "rgb_matrix_map.h"
+
 enum layer_names {
     _MAC,
     _MFN,
@@ -140,3 +142,35 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [_WFN] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
 };
 #endif
+
+void keyboard_post_init_user(void) {
+    // Start board off with matrix lights turned off
+    rgb_matrix_mode(RGB_MATRIX_NONE);
+}
+
+#ifdef RGB_MATRIX_ENABLE
+
+// keyboard state coloring
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    // Change all lights to off to build state back up
+    rgb_matrix_set_color_all(RGB_OFF);
+    
+    switch (get_highest_layer(layer_state)) {
+    case _MAC:
+        rgb_matrix_set_color(LED_INS, RGB_OFF);
+        break;
+    case _MFN:
+        rgb_matrix_set_color(LED_INS, RGB_RED);
+        break;
+    case _WIN:
+        rgb_matrix_set_color(LED_INS, RGB_PINK);
+        break;
+    case _WFN:
+        rgb_matrix_set_color(LED_INS, RGB_TEAL);
+        break;
+    }
+    return false;
+}
+
+#endif // RGB_MATRIX_ENABLE
