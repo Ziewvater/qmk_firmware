@@ -162,6 +162,12 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         break;
     case _MFN:
         rgb_matrix_set_color(LED_INS, RGB_RED);
+
+        // Highlight mouse keys
+        rgb_matrix_set_color(LED_H, RGB_CHARTREUSE);
+        rgb_matrix_set_color(LED_J, RGB_CHARTREUSE);
+        rgb_matrix_set_color(LED_K, RGB_CHARTREUSE);
+        rgb_matrix_set_color(LED_L, RGB_CHARTREUSE);
         break;
     case _WIN:
         rgb_matrix_set_color(LED_INS, RGB_PINK);
