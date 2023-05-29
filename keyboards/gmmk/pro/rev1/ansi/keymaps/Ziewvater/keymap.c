@@ -18,9 +18,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "rgb_matrix_map.h"
 
+// DEFINE MACROS
+#ifndef ARRAYSIZE
+#define ARRAYSIZE(arr)  sizeof(arr)/sizeof(arr[0])
+#endif // !ARRAYSIZE
+
 enum layer_names {
     _MAC,
     _MFN,
+    _MF2,
     _WIN,
     _WFN,
 };
@@ -105,12 +111,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [_MFN] = LAYOUT(
-        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,          _______,
+        _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  TG(_MF2),         _______,
         _______, RGB_TOG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, ALT_BK,           _______,
         _______, _______, RGB_VAI, _______, _______, _______, _______, _______, _______, _______, _______, Z_PREV,  Z_NEXT,  QK_BOOT,          _______,
         _______, _______, RGB_VAD, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_MCTL,          _______,          _______,
         _______,          _______, RGB_HUI, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            KC_BTN1,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
+    ),
+
+    [_MF2] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TG(_MF2),         _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_P7,   KC_P8,   KC_P9,   KC_P0,   KC_PMNS, KC_PPLS, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, KC_P1,   KC_P2,   KC_P3,   KC_PMNS, _______,          _______,          _______,
+        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______, _______
     ),
 
     [_WIN] = LAYOUT(
@@ -138,6 +153,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [_MAC] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [_MFN] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
+    [_MF2] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) },
     [_WIN] = { ENCODER_CCW_CW(KC_VOLD, KC_VOLU) },
     [_WFN] = { ENCODER_CCW_CW(KC_TRNS, KC_TRNS) }
 };
@@ -168,6 +184,14 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(LED_J, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_K, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_L, RGB_CHARTREUSE);
+        break;
+    case _MF2:
+        rgb_matrix_set_color(LED_INS, RGB_GOLDENROD);
+
+        // Highlight numpad
+        for (uint8_t i = 0; i < ARRAYSIZE(LED_LIST_NUMPAD); i++) {
+            rgb_matrix_set_color(LED_LIST_NUMPAD[i], RGB_PURPLE);
+        }
         break;
     case _WIN:
         rgb_matrix_set_color(LED_INS, RGB_PINK);

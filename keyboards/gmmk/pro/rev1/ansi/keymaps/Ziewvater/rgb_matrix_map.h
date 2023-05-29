@@ -253,18 +253,18 @@ const uint8_t LED_LIST_NUMPAD[] = {
     LED_U,
     LED_I,
     LED_O,
-    LED_P,
+    // LED_P,
     LED_J,
     LED_K,
     LED_L,
-    LED_SCLN,
-    LED_ENT,
-    LED_M,
-    LED_COMM,
-    LED_DOT,
-    LED_SLSH,
-    LED_END,
-    LED_RIGHT
+    // LED_SCLN,
+    // LED_ENT,
+    // LED_M,
+    // LED_COMM,
+    // LED_DOT,
+    // LED_SLSH,
+    // LED_END,
+    // LED_RIGHT
 };
 
 const uint8_t LED_SIDE_LEFT[] = {
