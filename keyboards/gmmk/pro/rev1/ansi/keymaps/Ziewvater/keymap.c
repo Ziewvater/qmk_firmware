@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum layer_names {
     _MAC,
     _MFN,
+    _MVI,
     _MF2,
     _WIN,
     _WFN,
@@ -35,10 +36,8 @@ enum custom_keycodes {
     Z_NEXT = SAFE_RANGE,
     Z_PREV,
     ALT_BK,
+    Z_META,
 };
-
-// Inline custom keycode definitions
-#define ESC_FN LT(_MFN, KC_CAPS)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -65,6 +64,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             SEND_STRING(SS_DOWN(X_RALT) SS_TAP(X_BACKSPACE) SS_UP(X_RALT));
         }
         break;
+    case Z_META:
+        if (record->tap.count && record->event.pressed) {
+            // Tapping key, just send Caps
+            SEND_STRING(SS_TAP(X_CAPS));
+        } else if (record->event.pressed) {
+            // Holding key down
+            if (get_mods() & MOD_MASK_GUI) {
+                // If either GUI key is pressed, enter MVI layer
+                layer_on(_MVI);
+                // Remove GUI mods so that arrow keys can be used normally
+                del_mods(MOD_MASK_GUI);
+            } else {
+                // No GUI, change layer to MFN
+                layer_on(_MFN);
+            }
+        } else {
+            // Releasing held key, turn function layers off
+            layer_off(_MFN);
+            layer_off(_MVI);
+        }
     }
     return true;
 };
@@ -105,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_BRID, KC_BRIU, KC_MCTL, KC_LPAD, KC_F5,   KC_F6,   KC_MPRV, KC_MPLY, KC_MNXT, KC_MUTE, KC_VOLD, KC_VOLU, TG(_WIN),         KC_MUTE,
         KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,          KC_HOME,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,          KC_MCTL,
-        ESC_FN,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           KC_DEL,
+        Z_META,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,          KC_ENT,           KC_DEL,
         KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT, KC_UP,   KC_END,
         KC_LCTL, KC_LALT, KC_LGUI,                            KC_SPC,                             KC_RGUI, MO(_MFN),KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT
     ),
@@ -117,6 +136,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, RGB_VAD, _______, _______, _______, KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, _______, KC_MCTL,          _______,          _______,
         _______,          _______, RGB_HUI, _______, _______, _______, NK_TOGG, _______, _______, _______, _______,          _______, RGB_MOD, _______,
         _______, _______, _______,                            KC_BTN1,                            _______, _______, _______, RGB_SPD, RGB_RMOD, RGB_SPI
+    ),
+
+    [_MVI] = LAYOUT(
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,         _______,
+        _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN,   KC_UP, KC_RIGHT,_______, _______,          _______,          _______,
+        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______,
+        _______, _______, _______,                            _______,                            _______, _______, _______, _______, _______, _______
     ),
 
     [_MF2] = LAYOUT(
@@ -184,6 +212,15 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(LED_J, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_K, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_L, RGB_CHARTREUSE);
+        break;
+    case _MVI:
+        rgb_matrix_set_color(LED_INS, RGB_PURPLE);
+
+        // Highlight arrow keys
+        rgb_matrix_set_color(LED_H, RGB_CORAL);
+        rgb_matrix_set_color(LED_J, RGB_CORAL);
+        rgb_matrix_set_color(LED_K, RGB_CORAL);
+        rgb_matrix_set_color(LED_L, RGB_CORAL);
         break;
     case _MF2:
         rgb_matrix_set_color(LED_INS, RGB_GOLDENROD);
