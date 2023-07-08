@@ -94,16 +94,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 };
 
-void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case Z_NEXT:
-        break;
-
-    case Z_PREV:
-        break;
-    }
-};
-
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
