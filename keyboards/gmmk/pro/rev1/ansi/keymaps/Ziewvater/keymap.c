@@ -196,6 +196,11 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     // Change all lights to off to build state back up
     rgb_matrix_set_color_all(RGB_OFF);
 
+    // Set caps lock key lit if caps lock is active (Should only happen on Windows)
+    if (host_keyboard_led_state().caps_lock) {
+        rgb_matrix_set_color(LED_CAPS, RGB_RED);
+    }
+
     switch (get_highest_layer(layer_state)) {
     case _MAC:
         rgb_matrix_set_color(LED_INS, RGB_OFF);
