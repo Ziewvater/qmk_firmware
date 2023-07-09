@@ -237,34 +237,26 @@ const uint8_t LED_LIST_LETTERS[] = {
     LED_M
 };
 
-const uint8_t LED_LIST_NUMPAD[] = {
-    LED_1,
-    LED_2,
-    LED_3,
-    LED_4,
-    LED_5,
-    LED_6,
+const uint8_t LED_LIST_NUMPAD_NUMBERS[] = {
     LED_7,
     LED_8,
     LED_9,
-    LED_0,
-    LED_MINS,
-    LED_EQL,
     LED_U,
     LED_I,
     LED_O,
-    // LED_P,
     LED_J,
     LED_K,
     LED_L,
-    // LED_SCLN,
-    // LED_ENT,
-    // LED_M,
-    // LED_COMM,
-    // LED_DOT,
-    // LED_SLSH,
-    // LED_END,
-    // LED_RIGHT
+    LED_M,
+    LED_COMM
+};
+
+const uint8_t LED_LIST_NUMPAD_FUNCTIONS[] = {
+    LED_P,
+    LED_DOT,
+    LED_SCLN,
+    LED_QUOT,
+    LED_SLSH
 };
 
 const uint8_t LED_SIDE_LEFT[] = {
