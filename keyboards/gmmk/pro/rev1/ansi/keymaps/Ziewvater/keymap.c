@@ -209,13 +209,23 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
         rgb_matrix_set_color(LED_INS, RGB_OFF);
         break;
     case _MFN:
-        rgb_matrix_set_color(LED_INS, RGB_RED);
+        // Numpad layer
+        rgb_matrix_set_color(LED_TAB, RGB_ORANGE);
+        rgb_matrix_set_color(LED_INS, RGB_ORANGE);
+
+        // Spaces navigation
+        rgb_matrix_set_color(LED_LBRC, RGB_TURQUOISE);
+        rgb_matrix_set_color(LED_RBRC, RGB_TURQUOISE);        
 
         // Highlight mouse keys
         rgb_matrix_set_color(LED_H, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_J, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_K, RGB_CHARTREUSE);
         rgb_matrix_set_color(LED_L, RGB_CHARTREUSE);
+
+        // Home and End
+        rgb_matrix_set_color(LED_PGUP, RGB_TEAL);
+        rgb_matrix_set_color(LED_PGDN, RGB_TEAL);
         break;
     case _MVI:
         rgb_matrix_set_color(LED_INS, RGB_PURPLE);
